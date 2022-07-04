@@ -59,7 +59,6 @@ function ProductList() {
 
     useEffect(() => {
         getProductsPageSize( dispatch, page, size);
-        
       }, [size]);
   return (
     <div className='w-[1217px] h-[945px] bg-[#F5F7FA]'>

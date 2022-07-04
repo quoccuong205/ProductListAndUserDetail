@@ -4,7 +4,7 @@ import { message } from "antd";
 
 export const getUser = async (accessToken, dispatch, nav) => {
     try{
-        const res = await axios.get("/v1/users?role=user&size=5", {
+        const res = await axios.get("/v1/users", {
             headers: { Authorization: `Bearer ${accessToken}` },
         });
         dispatch(getUserSuccess(res.data));
@@ -31,6 +31,21 @@ export const getUserById = async (accessToken, dispatch, userId) => {
         message.error({
             title: "Get User failed",
             content: error.response,
+          });
+    }
+}
+
+export const getUsersPageSize= async (accessToken ,dispatch, page, size) => {
+    try {
+      const res = await axios.get(`/v1/users?page=${page}&size=${size}`,{
+        headers: { Authorization: `Bearer ${accessToken}` },
+    });
+      dispatch(getUserSuccess(res.data));
+    }
+    catch (err) {
+        message.error({
+            title: "Get all Users for page failed",
+            content: error.response.data.message,
           });
     }
 }

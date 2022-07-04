@@ -6,9 +6,9 @@ import { BsSearch } from 'react-icons/bs';
 import { FiEdit } from 'react-icons/fi';
 import { FiTrash2 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom'
-import { getUserById } from '../redux/Admin/action'
+import { getUserById, getUsersPageSize } from '../redux/Admin/action'
 import { selectAccessToken } from '../redux/auth/selector'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoMdSearch } from "react-icons/io";
 import { FaSort } from "react-icons/fa";
 import { RiArrowRightSLine } from "react-icons/ri";
@@ -16,8 +16,8 @@ import { RiArrowLeftSLine } from "react-icons/ri";
 
 function UserList() {
     const [query, setQuery] = useState('') 
-    const data = useSelector(selectAllUser)
-    console.log(data);
+    const User = useSelector(selectAllUser)
+    console.log(User);
     const [order, setOrder] = useState("ASC")
     const nav = useNavigate();
     const dispatch = useDispatch();
@@ -27,19 +27,19 @@ function UserList() {
 
     let [num, setNum] = useState(1);
     let [cur, setCur] = useState(1);
-    const UserPreprocess = data.map((item, index) => ({
-      key: index +1,
-      id: item.id,
-      username: item.username,
-      email: item.email,
-      role: item.role,
-      contact: item.contact ? item.contact : 'null',
-      isActive: item.isActive ? 'Active' : 'Disabled',
-      isEmailVerified: item.isEmailVerified ? 'Yes' : 'No',
-      isContactVerified: item.isContactVerified ? 'Yes' : 'No',
-    }));
+    // const UserPreprocess = data.map((item, index) => ({
+    //   key: index +1,
+    //   id: item.id,
+    //   username: item.username,
+    //   email: item.email,
+    //   role: item.role,
+    //   contact: item.contact ? item.contact : 'null',
+    //   isActive: item.isActive ? 'Active' : 'Disabled',
+    //   isEmailVerified: item.isEmailVerified ? 'Yes' : 'No',
+    //   isContactVerified: item.isContactVerified ? 'Yes' : 'No',
+    // }));
 
-    const [User, setUser] = useState(UserPreprocess)
+    // const [User, setUser] = useState(data)
     console.log(User);
     const pages = [
         { page: num },
@@ -79,8 +79,8 @@ function UserList() {
     }
 
     useEffect(() => {
-      getProductsPageSize( dispatch, page, size);
-    }, [size]);//1217
+      getUsersPageSize( accessToken, dispatch, page, size);
+    }, [size]);
   return (
   <div className='w-[1217px] h-[945px] bg-[#F5F7FA]'> 
     <div className='relative'>
@@ -118,16 +118,19 @@ function UserList() {
                       val.username
                         .toLowerCase()
                         .includes(query.toLowerCase()) ||
-                        val.contact.
+                        (val.contact ? val.contact : 'null').
                         toString().toLowerCase()
                         .includes(query.toLowerCase()) || 
-                        val.isActive
+                        val.role.
+                        toString().toLowerCase()
+                        .includes(query.toLowerCase()) ||
+                        (val.isActive ? 'Active' : 'Disabled')
                         .toLowerCase()
                         .includes(query.toLowerCase()) ||
-                        val.isEmailVerified
+                        (val.isEmailVerified ? 'Yes' : 'No')
                         .toLowerCase()
                         .includes(query.toLowerCase()) ||
-                        val.isContactVerified
+                        (val.isContactVerified ? 'Yes' : 'No')
                         .toLowerCase()
                         .includes(query.toLowerCase()) ||
                         val.email
@@ -153,10 +156,10 @@ function UserList() {
                     <p className=' ml-[105px] mt-[-10px] font-arial font-medium not-italic text-[18px] w-[174px] leading-[21px]'>{user.email}</p>
                   </div>
                   </td>
-                <td className='w-[100px] text-[20px] leading-[23px]' >{user.contact}</td>
-                <td className='w-[100px] text-[20px] leading-[23px]' >{user.isActive}</td>
-                <td className='w-[100px] text-[20px] leading-[23px]'>{user.isEmailVerified}</td>
-                <td className='w-[100px] text-[20px] leading-[23px]'>{user.isContactVerified}</td>
+                <td className='w-[100px] text-[20px] leading-[23px]' >{user.contact ? user.contact : 'null'}</td>
+                <td className='w-[100px] text-[20px] leading-[23px]' >{user.isActive ? 'Active' : 'Disabled'}</td>
+                <td className='w-[100px] text-[20px] leading-[23px]'>{user.isEmailVerified ? 'Yes' : 'No'}</td>
+                <td className='w-[100px] text-[20px] leading-[23px]'>{user.isContactVerified ? 'Yes' : 'No'}</td>
                 <td className="w-[100px] mt-[32px] flex flex-row justify-center">
                   <FiEdit
                       className=" w-[25px] h-[25px] cursor-pointer"
@@ -188,7 +191,7 @@ function UserList() {
                     key={i}
                     onClick={() => {
                       setCur(pg.page);
-                      getProductsPageSize(dispatch, pg.page, size);
+                      getUsersPageSize(accessToken,dispatch, pg.page, size);
                     }}
                     className={`w-[32px] h-[32px] ml-[8px] text-center 
                 text-[14px] font-bold font-sans bg-[#DFE3E8] rounded-[4px] 
