@@ -61,7 +61,7 @@ function ProductList() {
         getProductsPageSize( dispatch, page, size);
       }, [size]);
   return (
-    <div className='w-[1217px] h-[945px] bg-[#F5F7FA]'>
+    <div className={"w-[1217px] h-[945px] bg-[#F5F7FA]"}>
     <div className='relative'>
       <p className="w-[226px] h-[18px] ml-[32px] pt-[25px] font-arial not-italic font-medium text-[18px] leading-[21px] text-[#929395]">DashBoard / Product</p>
       <p className="w-[227px] h-[31px] ml-[31px] pt-[15px] mt-[21px] font-WorkSans not-italic font-semibold text-[35px] leading-[41px]">Product</p>
@@ -119,7 +119,7 @@ function ProductList() {
                         src={product.images[0].url}
                       />
                       <div className= 'flex flex-row'>
-                      <p className=' ml-[105px] mt-[21px]'>{product.name}</p>
+                      <p className='truncate ml-[105px] mt-[21px]'>{product.name}</p>
                     </div>
                     <p className=' ml-[48px] mt-[-10px] font-arial font-medium not-italic text-[18px] w-[174px] leading-[21px]'>ID: {product.id}</p>
                   </div>
@@ -151,8 +151,8 @@ function ProductList() {
             ))
             }
           </tbody>
-      </table>
-      <div className="flex justify-between">
+          <tfoot>
+          <div className="flex justify-between">
               <div className="flex mt-[20px] ml-[30px]">
                 <button
                   onClick={Back}
@@ -172,7 +172,7 @@ function ProductList() {
                     }}
                     className={`w-[32px] h-[32px] ml-[8px] text-center 
                 text-[14px] font-bold font-sans bg-[#DFE3E8] rounded-[4px] 
-                ${cur === pg.page && " bg-yellow-400"}`}
+                ${cur === pg.page ? " bg-mainbar": ''}`}
                   >
                     {pg.page}
                   </button>
@@ -199,6 +199,8 @@ function ProductList() {
                 />
               </div>
             </div>
+            </tfoot>
+      </table>
     </div>
     </div>
   </div>

@@ -150,10 +150,10 @@ function UserList() {
                         src={user.avatar}
                       />
                       <div className= 'flex flex-row'>
-                      <p className='ml-[105px] mt-[21px]'>{user.username}</p>
+                      <p className='truncate ml-[105px] mt-[21px]'>{user.username}</p>
                       {user.role === 'admin' ? <p className='w-[65px] h-[18px] ml-[10px] bg-[#4B9528] rounded-[10px] font-semibold text-[12px] leading-[14px] text-[#FFFFFF] mt-[26px]'>{user.role}</p> : <p className=' h-[18px] ml-[10px] text-[#FFFFFF] w-[65px] ml-[18px] mt-[26px] bg-[#E13A44] rounded-[10px] font-semibold text-[12px] leading-[14px]'>{user.role}</p> }
                     </div>
-                    <p className=' ml-[105px] mt-[-10px] font-arial font-medium not-italic text-[18px] w-[174px] leading-[21px]'>{user.email}</p>
+                    <p className=' ml-[105px] mt-[-10px] truncate font-arial font-medium not-italic text-[18px] w-[174px] leading-[21px]'>{user.email}</p>
                   </div>
                   </td>
                 <td className='w-[100px] text-[20px] leading-[23px]' >{user.contact ? user.contact : 'null'}</td>
@@ -195,7 +195,7 @@ function UserList() {
                     }}
                     className={`w-[32px] h-[32px] ml-[8px] text-center 
                 text-[14px] font-bold font-sans bg-[#DFE3E8] rounded-[4px] 
-                ${cur === pg.page && " bg-yellow-400"}`}
+                ${cur === pg.page ? " bg-mainbar": ''}`}
                   >
                     {pg.page}
                   </button>
